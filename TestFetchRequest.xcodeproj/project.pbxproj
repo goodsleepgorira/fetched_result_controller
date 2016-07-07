@@ -13,6 +13,8 @@
 		88FB211D1D2E50CD00148733 /* TestFetchRequest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 88FB211B1D2E50CD00148733 /* TestFetchRequest.xcdatamodeld */; };
 		88FB211F1D2E50CD00148733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88FB211E1D2E50CD00148733 /* Assets.xcassets */; };
 		88FB21221D2E50CD00148733 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88FB21201D2E50CD00148733 /* LaunchScreen.storyboard */; };
+		88FB212B1D2E559F00148733 /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FB21291D2E559F00148733 /* Book+CoreDataProperties.swift */; };
+		88FB212C1D2E559F00148733 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FB212A1D2E559F00148733 /* Book.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		88FB211E1D2E50CD00148733 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		88FB21211D2E50CD00148733 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		88FB21231D2E50CD00148733 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		88FB21291D2E559F00148733 /* Book+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Book+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		88FB212A1D2E559F00148733 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +44,8 @@
 		88FB21081D2E50CD00148733 = {
 			isa = PBXGroup;
 			children = (
+				88FB21291D2E559F00148733 /* Book+CoreDataProperties.swift */,
+				88FB212A1D2E559F00148733 /* Book.swift */,
 				88FB21131D2E50CD00148733 /* TestFetchRequest */,
 				88FB21121D2E50CD00148733 /* Products */,
 			);
@@ -140,6 +146,8 @@
 			files = (
 				88FB21171D2E50CD00148733 /* ViewController.swift in Sources */,
 				88FB211D1D2E50CD00148733 /* TestFetchRequest.xcdatamodeld in Sources */,
+				88FB212B1D2E559F00148733 /* Book+CoreDataProperties.swift in Sources */,
+				88FB212C1D2E559F00148733 /* Book.swift in Sources */,
 				88FB21151D2E50CD00148733 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -290,6 +298,7 @@
 				88FB21281D2E50CD00148733 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
