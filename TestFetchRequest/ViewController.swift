@@ -113,24 +113,21 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchBarDelega
         //キーボードをしまう。
         testSearchBar.endEditing(true)
 
-        do {
-            //検索結果配列を空にする。
-            searchResult.removeAll()
+        //検索結果配列を空にする。
+        searchResult.removeAll()
         
-            if(testSearchBar.text == "") {
+        //フェッチリクエストのインスタンスを生成する。
+        let fetchRequest = NSFetchRequest(entityName: "Book")
 
-                //検索文字列が空の場合はすべてを表示する。
-                let fetchRequest = NSFetchRequest(entityName: "Book")
-                searchResult = try managedContext.executeFetchRequest(fetchRequest) as! [Book]
+        if(testSearchBar.text != "") {
 
-            } else {
+            //属性nameが検索文字列と一致するデータをフェッチ対象にする。
+            fetchRequest.predicate = NSPredicate(format:"name = %@", testSearchBar.text!)
+        }
 
-                //本を検索する。
-                let fetchRequest = NSFetchRequest(entityName: "Book")
-                fetchRequest.predicate = NSPredicate(format:"name = %@", testSearchBar.text!)
-                searchResult = try managedContext.executeFetchRequest(fetchRequest) as! [Book]
-
-            }
+        do {
+            //フェッチリクエストを実行する。
+            searchResult = try managedContext.executeFetchRequest(fetchRequest) as! [Book]
 
         } catch {
             print(error)
