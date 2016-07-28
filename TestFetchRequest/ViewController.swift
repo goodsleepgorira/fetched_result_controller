@@ -38,22 +38,30 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchBarDelega
     
     //本を保存するメソッド
     func insertBook(){
+        
         do {
-            //本のオブジェクトを管理オブジェクトコンテキストに格納する。
-            for data in dataList {
-                let book = NSEntityDescription.insertNewObjectForEntityForName("Book", inManagedObjectContext: managedContext) as! Book
-                book.name = data[0] as? String        //雑誌名
-                book.publisher = data[1] as? String   //出版社
-                book.price = data[2] as? Int          //価格
-                book.approvalRate = data[3] as? Float //支持率
-                
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.dateFormat = "yyyy/M/d H:mm:ss"
-                book.releaseDate = dateFormatter.dateFromString(data[4] as! String)! //発売日
-            }
+            //Bookエンティティの件数を取得する。。
+            let fetchRequest = NSFetchRequest(entityName: "Book")
+            fetchRequest.resultType = .CountResultType
+            let result = try managedContext.executeFetchRequest(fetchRequest) as! [Int]
             
-            //管理オブジェクトコンテキストの中身を保存する。
-            try managedContext.save()
+            if(result[0] == 0){
+                //何も保存されていない場合は検証用データを保存する。
+                for data in dataList {
+                    let book = NSEntityDescription.insertNewObjectForEntityForName("Book", inManagedObjectContext: managedContext) as! Book
+                    book.name = data[0] as? String        //雑誌名
+                    book.publisher = data[1] as? String   //出版社
+                    book.price = data[2] as? Int          //価格
+                    book.approvalRate = data[3] as? Float //支持率
+                    
+                    let dateFormatter = NSDateFormatter()
+                    dateFormatter.dateFormat = "yyyy/M/d H:mm:ss"
+                    book.releaseDate = dateFormatter.dateFromString(data[4] as! String)! //発売日
+                }
+                
+                //管理オブジェクトコンテキストの中身を保存する。
+                try managedContext.save()
+            }
             
         } catch {
             print(error)
@@ -122,7 +130,7 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchBarDelega
         if(testSearchBar.text != "") {
 
             //属性nameが検索文字列と一致するデータをフェッチ対象にする。
-            fetchRequest.predicate = NSPredicate(format:"name = %@", testSearchBar.text!)
+            fetchRequest.predicate = NSPredicate(format:"name C御大んS %@", testSearchBar.text!)
         }
 
         do {
@@ -136,4 +144,44 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchBarDelega
         //テーブルを再読み込みする。
         testTableView.reloadData()
     }
+
+
+    
+    //編集可否を答えるメソッド
+    func tableView(tableView: UITableView,canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool
+    {
+        //すべての行を編集可能にする。
+        return true
+    }
+
+    
+    
+    //テーブルビュー編集時の呼び出しメソッド
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            do {
+                //選択行のオブジェクトを管理オブジェクトコンテキストから取得する。
+                let fetchRequest = NSFetchRequest(entityName: "Book")
+                fetchRequest.predicate = NSPredicate(format:"name = %@", searchResult[indexPath.row].name!)
+                
+                if let result = try managedContext.executeFetchRequest(fetchRequest) as? [Book] {
+                    
+                    //検索結果配列から選択行のオブジェクトを削除する。
+                    searchResult.removeAtIndex(indexPath.row)
+                    
+                    //テーブルビューから選択行を削除する。
+                    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                    
+                    //管理オブジェクトコンテキストから選択行のオブジェクトを削除する。
+                    managedContext.deleteObject(result[0])
+                    
+                    //管理オブジェクトコンテキストの中身を保存する。
+                    try managedContext.save()
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+
 }
