@@ -34,6 +34,29 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchBarDelega
 
     //検索結果配列
     var searchResult = [Book]()
+
+
+    //最初からあるメソッド
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        //デリゲート先を自分に設定する。
+        testSearchBar.delegate = self
+        
+        //何も入力されていなくてもReturnキーを押せるようにする。
+        testSearchBar.enablesReturnKeyAutomatically = false
+        
+        //管理オブジェクトコンテキストを取得する。
+        let applicationDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        managedContext = applicationDelegate.managedObjectContext
+        
+        //コンフリクトが発生した場合はマージする。
+        managedContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        
+        //検証用データを格納する。
+        insertBook()
+    }
+    
     
     
     //本を保存するメソッド
@@ -67,30 +90,6 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchBarDelega
             print(error)
         }
     }
-    
-    
-    
-    //最初からあるメソッド
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        //デリゲート先を自分に設定する。
-        testSearchBar.delegate = self
-        
-        //何も入力されていなくてもReturnキーを押せるようにする。
-        testSearchBar.enablesReturnKeyAutomatically = false
-
-        //管理オブジェクトコンテキストを取得する。
-        let applicationDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        managedContext = applicationDelegate.managedObjectContext
-
-        //コンフリクトが発生した場合はマージする。
-        managedContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-
-        //検証用データを格納する。
-        insertBook()
-    }
-    
     
     
     //データを返すメソッド
@@ -130,7 +129,7 @@ class ViewController: UIViewController, UITableViewDataSource, UISearchBarDelega
         if(testSearchBar.text != "") {
 
             //属性nameが検索文字列と一致するデータをフェッチ対象にする。
-            fetchRequest.predicate = NSPredicate(format:"name C御大んS %@", testSearchBar.text!)
+            fetchRequest.predicate = NSPredicate(format:"name CONTAINS %@", testSearchBar.text!)
         }
 
         do {
